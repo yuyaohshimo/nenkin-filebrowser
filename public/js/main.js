@@ -114,8 +114,6 @@ $(window).on('touchstart', function (e) {
 		var moveX = e.touches[0].clientX;
 		var diff = moveX - startX;
 
-		console.log('diff: ', diff);
-
 		// update startX
 		startX = moveX;
 
