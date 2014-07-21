@@ -9,7 +9,8 @@ var isResizing = false;
 
 // ajax
 var getImageNames = function (callback) {
-	$.http.get('http://localhost:3000/api/imageNames', {
+	// $.http.get('http://localhost:3000/api/imageNames', {
+	$.http.get('http://169.254.98.130:3000/api/imageNames', {
 		complete: function (data) {
 			callback(null, JSON.parse(data));
 		},
@@ -77,20 +78,48 @@ $(window).on('resize', function () {
 	}, 1000);
 });
 
-$('#knob').on('mousedown', function (e) {
+$(window).on('touchstart', function (e) {
+
+	e.preventDefault();
+
+	var startX = e.touches[0].clientX;
+	var startY = e.touches[0].clientY;
+
+	if (!(startX >= $('#knob').bound().left && startX <= $('#knob').bound().right &&
+		startY <= $('#knob').bound().bottom && startY >= $('#knob').bound().top
+		)) {
+
+		// toggle slider
+		if ($('#slider').hasClass('show')) {
+			$('#slider')
+			.cls({
+				hide: 1,
+				show: -1
+			});
+		} else {
+		$('#slider')
+			.cls({
+				hide: -1,
+				show: 1
+			});
+		}
+
+		return;
+	}
+
 	var minX = 0;
-	var maxX = $('#slider').width() - $(this).width() + 1;
+	var maxX = $('#slider').width() - $('#knob').width() + 1;
 
-	var startX = e.clientX;
-
-	$(this).on('mousemove', function (e) {
-		var moveX = e.clientX;
+	$(window).on('touchmove', function (e) {
+		var moveX = e.touches[0].clientX;
 		var diff = moveX - startX;
+
+		console.log('diff: ', diff);
 
 		// update startX
 		startX = moveX;
 
-		var newX = parseInt($(this).css('left')) + diff;
+		var newX = parseInt($('#knob').css('left')) + diff;
 
 		if (newX < minX) {
 			newX = minX;
@@ -100,23 +129,16 @@ $('#knob').on('mousedown', function (e) {
 			newX = maxX;
 		} 
 
-		$(this).css({
+		$('#knob').css({
 			left: newX + 'px'
 		});
 
 		changeImage();
 	});
 
-	$(this).on('mouseup', function () {
-		$(this).off('mousemove');
-		$(this).off('mouseup');
-		$(this).off('mouseout');
-	});
-
-	$(this).on('mouseout', function () {
-		$(this).off('mousemove');
-		$(this).off('mouseup');
-		$(this).off('mouseout');
+	$(window).on('touchend', function () {
+		$(window).off('touchmove');
+		$(window).off('touchup');
 	});
 
 });
