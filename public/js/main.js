@@ -9,8 +9,8 @@ var isResizing = false;
 
 // ajax
 var getImageNames = function (callback) {
-	// $.http.get('http://localhost:3000/api/imageNames', {
-	$.http.get('http://169.254.98.130:3000/api/imageNames', {
+	$.http.get('http://localhost:3000/api/imageNames', {
+	// $.http.get('http://169.254.98.130:3000/api/imageNames', {
 		complete: function (data) {
 			callback(null, JSON.parse(data));
 		},
