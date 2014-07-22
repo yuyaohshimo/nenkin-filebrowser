@@ -1,5 +1,5 @@
 var vp = $.viewport();
-var imagePath = './img';
+var imagePath = './resizedImg';
 var images = [];
 var cacheImageName = [];
 var cacheImg = {};

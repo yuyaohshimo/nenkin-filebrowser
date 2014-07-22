@@ -11,7 +11,7 @@ app.get('/', function (req, res) {
 });
 
 app.get('/api/imageNames', function (req, res) {
-	var imagePath = './public/img';
+	var imagePath = './public/resizedImg';
 	var images = fs.readdirSync(imagePath);
 
 	// delete extra files
