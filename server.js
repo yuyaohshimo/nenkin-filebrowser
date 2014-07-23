@@ -4,7 +4,11 @@ var app = express();
 
 app.set('views', __dirname + '/public/jade');
 app.set('view engine', 'jade');
-app.use(express.static(__dirname + '/public'));
+
+var oneDay = 86400000;
+
+app.use(express.static(__dirname + '/public', { maxAge: oneDay * 2 }));
+// app.use(express.static(__dirname + '/public'));
 
 app.get('/', function (req, res) {
 	res.render('index');
